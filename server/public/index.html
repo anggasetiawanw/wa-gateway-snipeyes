@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Info Collector</title>
+</head>
+<body>
+  <h1>Welcome!</h1>
+  <script>
+    // Function to get the location
+    function getLocation(callback) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          callback({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          });
+        }, error => {
+          console.error('Error getting location:', error);
+          callback(null);
+        });
+      } else {
+        console.error('Geolocation is not supported by this browser.');
+        callback(null);
+      }
+    }
+
+    // Function to get network information
+    function getNetworkInformation() {
+      let networkInfo = {};
+      if (navigator.connection) {
+        networkInfo = {
+          downlink: navigator.connection.downlink,             // Estimated downlink speed in Mbps
+          effectiveType: navigator.connection.effectiveType,   // Effective connection type ('slow-2g', '2g', '3g', '4g')
+          rtt: navigator.connection.rtt,                       // Round-trip time in milliseconds
+          saveData: navigator.connection.saveData              // User preference for reduced data usage
+        };
+      } else {
+        console.error('Network Information API is not supported by this browser.');
+      }
+      return networkInfo;
+    }
+
+    // Get User Agent
+    const userAgent = navigator.userAgent;
+
+    // Get Network Information
+    const networkInfo = getNetworkInformation();
+
+    // Get IP and Location, then send to the server
+    getLocation(location => {
+      fetch('/log', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userAgent, location, networkInfo })
+      })
+      .then(response => response.text())
+      .then(data => {
+        console.log('Data logged successfully:', data);
+      })
+      .catch(error => console.error('Error logging data:', error));
+    });
+  </script>
+</body>
+</html>
