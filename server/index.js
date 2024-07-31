@@ -8,7 +8,8 @@ const path = require("path");
 const MainRouter = require("./app/routers");
 const errorHandlerMiddleware = require("./app/middlewares/error_middleware");
 const whatsapp = require("wa-session-custom");
-const mysql = require('mysql2');
+const mysql = require("mysql2");
+const { type } = require("os");
 
 config();
 
@@ -22,7 +23,10 @@ app.set("view engine", "ejs");
 // Public Path
 app.use("/p", express.static(path.resolve("public")));
 app.use("/p/*", (req, res) => res.status(404).send("Media Not Found"));
-
+app.get("/data/:number", (req, res) => {
+    // Serve the HTML file
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 app.use(MainRouter);
 
 app.use(errorHandlerMiddleware);
@@ -38,55 +42,69 @@ const connection = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE
+    database: process.env.DB_DATABASE,
 });
 
 whatsapp.onConnected((session) => {
-  console.log("connected => ", session);
+    console.log("connected => ", session);
 });
 
 whatsapp.onDisconnected((session) => {
-  console.log("disconnected => ", session);
+    console.log("disconnected => ", session);
 });
 
 whatsapp.onConnecting((session) => {
-  console.log("connecting => ", session);
+    console.log("connecting => ", session);
 });
 
 whatsapp.onMessageReceived(async (msg) => {
     console.log(msg);
     if (msg.key.fromMe || msg.key.remoteJid.includes("status")) return;
-    
-    let pilihan = msg.message.conversation || msg.message.extendedTextMessage.text || '';
-    console.log(pilihan);
-    await whatsapp.readMessage({
-        sessionId: msg.sessionId,
-        key: msg.key,
-    });
-    if (pilihan == 'hello') {
-       await whatsapp.sendTextMessage({
-            sessionId: msg.sessionId,
-            to: msg.key.remoteJid,
-            text: "Hello juga",
-            answering: msg, // for quoting message
-        });
-        const buttons = [
-          {buttonId: "id1", buttonText: {displayText: 'Get Coupon'}},
-          {buttonId: "id2", buttonText: {displayText: 'Dapatkan hadiah !'}},
-          ]
-          const buttonInfo = {
-            text: "Ini test button",
-            buttons: buttons,
-            viewOnce:true,
-            headerType: 1
-            }
-        await whatsapp.sendCustomMessage({
-          sessionId: msg.sessionId,
-          to: msg.key.remoteJid,
-          content: buttonInfo,
-          answering: msg, // for quoting message
-    });
-    }
+
+    // let pilihan =
+    //     msg.message.conversation || msg.message.extendedTextMessage.text || "";
+    // console.log(pilihan);
+    // await whatsapp.readMessage({
+    //     sessionId: msg.sessionId,
+    //     key: msg.key,
+    // });
+    // if (pilihan == "hello") {
+    //     const buttons = [
+    //         {
+    //             buttonId: "id1",
+    //             buttonText: { displayText: "Get Coupon" },
+    //         },
+    //         {
+    //             buttonId: "id2",
+    //             buttonText: { displayText: "Dapatkan hadiah !" },
+    //         },
+    //     ];
+    //     const buttonInfo = {
+    //         text: "Click the button below to visit the website:",
+    //         buttons: buttons,
+    //         footer: "Baileys Example",
+    //         viewOnce: true,
+    //         headerType: 1,
+    //     };
+
+    //     const buttonMessage = {
+    //         text: "Click the button below to visit the website:",
+    //         footer: "Baileys Example",
+    //         buttons: [
+    //             {
+    //                 buttonId: "1",
+    //                 buttonText: { displayText: "Visit Website" },
+    //             },
+    //         ],
+    //         headerType: 1,
+    //     };
+    //     await whatsapp.sendCustomMessage({
+    //         sessionId: msg.sessionId,
+    //         to: msg.key.remoteJid,
+    //         content: buttonInfo,
+    //         answering: msg, // for quoting message
+    //     });
+    // }
     // await whatsapp.sendTyping({
     //     sessionId: msg.sessionId,
     //     to: msg.key.remoteJid,
@@ -113,7 +131,6 @@ whatsapp.onMessageReceived(async (msg) => {
     //         });
     //     }}
     // });
-
-})
+});
 
 whatsapp.loadSessionsFromStorage();

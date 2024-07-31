@@ -98,6 +98,12 @@
                                                     Pesan Satuan
                                                 </label>
                                             </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="menu[]" value="pesan-custom" >
+                                                <label class="form-check-label">
+                                                    Pesan Custom
+                                                </label>
+                                            </div>
 {{--                                            <div class="form-check">--}}
 {{--                                                <input class="form-check-input" type="checkbox" name="menu[]" value="rest-apis" >--}}
 {{--                                                <label class="form-check-label">--}}

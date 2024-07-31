@@ -98,6 +98,12 @@
                                                     Pesan Satuan
                                                 </label>
                                             </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="menu[]" value="pesan-custom" @if( in_array("pesan-custom",json_decode($data->menu) ?? []) ) checked @endif >
+                                                <label class="form-check-label">
+                                                    Pesan Custom
+                                                </label>
+                                            </div>
 {{--                                            <div class="form-check">--}}
 {{--                                                <input class="form-check-input" type="checkbox" name="menu[]" value="rest-apis" @if( in_array("rest-apis",json_decode($data->menu) ?? []) ) checked @endif >--}}
 {{--                                                <label class="form-check-label">--}}

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    
+
     return view('welcome');
 });
 
@@ -103,4 +103,15 @@ Route::group(['prefix' => 'pesan-satuan', 'middleware' => ['auth']], function(){
     Route::delete('/delete/{id}',[App\Http\Controllers\PesanSatuanController::class,'delete'])->name('pesan-satuan.destroy');
     Route::post('/import',[App\Http\Controllers\PesanSatuanController::class,'import'])->name('pesan-satuan.import');
     Route::get('/process',[App\Http\Controllers\PesanSatuanController::class,'process'])->name('pesan-satuan.process');
+});
+
+Route::group(['prefix' => 'pesan-custom', 'middleware' => ['auth']], function(){
+    Route::get('/',[App\Http\Controllers\PesanCustomController::class,'index'])->name('pesan-custom');
+    Route::get('/create',[App\Http\Controllers\PesanCustomController::class,'create'])->name('pesan-custom.create');
+    Route::post('/store',[App\Http\Controllers\PesanCustomController::class,'store'])->name('pesan-custom.store');
+    Route::get('/edit/{id}',[App\Http\Controllers\PesanCustomController::class,'edit'])->name('pesan-custom.edit');
+    Route::post('/update/{id}',[App\Http\Controllers\PesanCustomController::class,'update'])->name('pesan-custom.update');
+    Route::delete('/delete/{id}',[App\Http\Controllers\PesanCustomController::class,'delete'])->name('pesan-custom.destroy');
+    Route::post('/import',[App\Http\Controllers\PesanCustomController::class,'import'])->name('pesan-custom.import');
+    Route::get('/process',[App\Http\Controllers\PesanCustomController::class,'process'])->name('pesan-custom.process');
 });

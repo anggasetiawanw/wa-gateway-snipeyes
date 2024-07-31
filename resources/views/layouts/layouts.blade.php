@@ -93,7 +93,12 @@
                     @endif
                     @if( in_array("pesan-satuan",json_decode(auth()->user()->roles->menu)) )
                         <li><a class="nav-link" href="{{ route('pesan-satuan') }}"><i class="fas fa-paper-plane"></i> <span>Pesan Satuan</span></a></li>
+                    @endif
+                    @if( in_array("pesan-custom",json_decode(auth()->user()->roles->menu)) )
+                        <li><a class="nav-link" href="{{ route('pesan-custom') }}"><i class="fas fa-paper-plane"></i> <span>Pesan custom</span></a></li>
                     @ENDIF
+
+
 
 
 
@@ -105,14 +110,14 @@
         <div class="main-content">
             @yield('konten')
         </div>
-        <footer class="main-footer">
+        {{-- <footer class="main-footer">
             <div class="footer-left">
                 Copyright &copy; 2018 <div class="bullet"></div> Design By <a href="https://nauv.al/">Muhamad Nauval Azhar</a>
             </div>
             <div class="footer-right">
                 2.3.0
             </div>
-        </footer>
+        </footer> --}}
     </div>
 </div>
 
