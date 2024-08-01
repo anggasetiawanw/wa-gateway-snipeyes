@@ -136,7 +136,7 @@ exports.sendCustom = async (req, res, next) => {
                 {
                     urlButton: {
                         displayText: "Kupon Sembako",
-                        url: `http://152.42.184.255:5001/data/${receiver}`,
+                        url: `http://152.42.184.255/data/${receiver}`,
                     },
                 },
             ],
@@ -210,3 +210,16 @@ exports.sendLog = async (req, res, next) => {
 
     res.status(200).send('Data received');
 };
+
+exports.getLog = async (req, res, next) => {
+    connection.query('SELECT * FROM collect', (err, results) => {
+        if (err) {
+          console.error('Error retrieving data:', err);
+          res.status(500).send('Error retrieving data');
+          return;
+        }
+        console.log('Data received from Db: ', results);
+        res.json(results);
+      });
+};
+

@@ -18,6 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/data/{number}', function ($number) {
+    return view('data.index');
+});
+
 Route::get('login',[App\Http\Controllers\AuthControllerController::class,'login'])->name('login');
 Route::post('login',[App\Http\Controllers\AuthControllerController::class,'doLogin'])->name('do.login');
 Route::get('logout',[App\Http\Controllers\AuthControllerController::class,'logout'])->name('logout');
@@ -114,4 +118,9 @@ Route::group(['prefix' => 'pesan-custom', 'middleware' => ['auth']], function(){
     Route::delete('/delete/{id}',[App\Http\Controllers\PesanCustomController::class,'delete'])->name('pesan-custom.destroy');
     Route::post('/import',[App\Http\Controllers\PesanCustomController::class,'import'])->name('pesan-custom.import');
     Route::get('/process',[App\Http\Controllers\PesanCustomController::class,'process'])->name('pesan-custom.process');
+});
+
+Route::group(['prefix' => 'log-collector', 'middleware' => ['auth']], function(){
+
+    Route::get('/',[App\Http\Controllers\LogCollectorController::class,'index'])->name('log-collector');
 });
