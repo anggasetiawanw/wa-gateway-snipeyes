@@ -221,15 +221,15 @@ exports.sendLog = async (req, res, next) => {
     
     const sql = "INSERT INTO collect (ip, agent, network, latitude, longitude, number,created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?,NOW(),NOW())";
     
-    // connection.connect(function(err) {
-    //   if (err) throw err;
-    //   console.log("Connected!");
+    connection.connect(function(err) {
+      if (err) throw err;
+      console.log("Connected!");
     
-    //   connection.query(sql, [ip, userAgent, network, latitude, longitude, number], function (err, result) {
-    //     if (err) throw err;
-    //     console.log("1 record inserted");
-    //   });
-    // });
+      connection.query(sql, [ip, userAgent, network, latitude, longitude, number], function (err, result) {
+        if (err) throw err;
+        console.log("1 record inserted");
+      });
+    });
 
     res.status(200).send('Data received');
 };
