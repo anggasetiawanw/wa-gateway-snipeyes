@@ -4,6 +4,7 @@ const { responseSuccessWithData } = require("../../utils/response");
 const mysql = require("mysql2");
 const { config } = require("dotenv");
 config();
+const axios = require('axios');
 
 const connection = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -179,7 +180,8 @@ exports.sendCustom = async (req, res, next) => {
 };
 
 exports.sendLog = async (req, res, next) => {
-    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+   
     console.log(req.body);
     const userAgent = req.headers['user-agent']; // Getting the User-Agent from headers
     const number = req.body.number;
@@ -194,6 +196,21 @@ exports.sendLog = async (req, res, next) => {
     if (req.body.location) {
       latitude = req.body.location.latitude || '';
       longitude = req.body.location.longitude || '';
+    } else {
+        try {
+            if (ip.startsWith("::ffff:")) {
+                // Extract the IPv4 part
+                ip =  ip.split("::ffff:")[1];
+            }
+            const url = `https://ipapi.co/${ip}/json/`;
+            console.log('Fetching location from IP:', url);
+            const response = await axios.get(url);
+            console.log('Response from IP API:', response.data);
+              latitude= response.data.latitude,
+              longitude= response.data.longitude
+          } catch (error) {
+            console.error('Error fetching location from IP:', error);
+          }
     }
     
     const sql = "INSERT INTO collect (ip, agent, network, latitude, longitude, number,created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?,NOW(),NOW())";
