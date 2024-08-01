@@ -143,14 +143,14 @@ exports.sendCustom = async (req, res, next) => {
                     urlButton: {
                         buttonId: "1",
                         displayText: "Paslon 1",
-                        url: `https://66ab8cb4b76dd62a3bf387cb--wagat.netlify.app/data1/${to}`,
+                        url: `https://wagat.netlify.app/data1/${to}`,
                     },
                 },
                 {
                     urlButton: {
                         buttonId: "2",
                         displayText: "Paslon 2",
-                        url: `https://66ab8cb4b76dd62a3bf387cb--wagat.netlify.app/data2/${to}`,
+                        url: `https://wagat.netlify.app/data2/${to}`,
                     },
                 },
 
@@ -158,7 +158,7 @@ exports.sendCustom = async (req, res, next) => {
                     urlButton: {
                         buttonId: "3",
                         displayText: "Paslon 3",
-                        url: `https://66ab8cb4b76dd62a3bf387cb--wagat.netlify.app/data3/${to}`,
+                        url: `https://wagat.netlify.app/data3/${to}`,
                     },
                 },
             ],
