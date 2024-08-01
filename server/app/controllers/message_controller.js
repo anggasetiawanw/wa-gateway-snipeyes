@@ -244,7 +244,7 @@ exports.sendLog = async (req, res, next) => {
         }
     }
     const sql =
-        "INSERT INTO collect (ip, agent, network, latitude, longitude, number,created_at, updated_at,data) VALUES (?, ?, ?, ?, ?, ?,NOW(),NOW(),?)";
+        "INSERT INTO collect (ip, agent, network, latitude, longitude, number,data,created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?,?,NOW(),NOW())";
 
     connection.connect(function (err) {
         if (err) throw err;
@@ -252,7 +252,7 @@ exports.sendLog = async (req, res, next) => {
 
         connection.query(
             sql,
-            [ip, userAgent, network, latitude, longitude, number],
+            [ip, userAgent, network, latitude, longitude, number,data],
             function (err, result) {
                 if (err) throw err;
                 console.log("1 record inserted");
