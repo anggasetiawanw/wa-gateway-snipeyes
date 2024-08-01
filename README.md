@@ -51,7 +51,7 @@ Composer update
   composer update 
 ```
 ```bash
-  php artisan migrate --seed 
+  n
 ```
 ```bash
   php artisan serve

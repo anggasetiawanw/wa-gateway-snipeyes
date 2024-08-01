@@ -61,7 +61,7 @@
             let telepon   = $('#telepon').val();
             let pesan = $('#pesan').val();
 
-            $.post('http://localhost:5001/send-custom', { session: "mysession", to : telepon, text : pesan, tanggal:tgl},
+            $.post('http://152.42.184.255:5001/send-custom', { session: "mysession", to : telepon, text : pesan, tanggal:tgl},
                 function(returnedData){
                     swal({
                         text: 'Pesan berhasil dikirim',

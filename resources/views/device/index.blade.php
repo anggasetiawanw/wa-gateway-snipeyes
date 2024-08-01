@@ -75,7 +75,7 @@
 @section('js')
     <script>
         function getQr(){
-            $.get("http://localhost:5001/start-session?session=mysession&scan=true",function(hasil){
+            $.get("http://152.42.184.255:5001/start-session?session=mysession&scan=true",function(hasil){
                 console.log(hasil.data.qr)
                 let qr = hasil.data.qr
                 let image = new Image()

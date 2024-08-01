@@ -55,7 +55,7 @@
         var tgl  = yyyy + "-"+mm+"-"+dd
 
         var intervalId = setInterval(function(){
-            $.post('http://localhost:5001/send-message', { session: "mysession", to : jobs[i], text : isi[i],tanggal:tgl},
+            $.post('http://152.42.184.255:5001/send-message', { session: "mysession", to : jobs[i], text : isi[i],tanggal:tgl},
                 function(returnedData){
 
                 }).fail(function(){
