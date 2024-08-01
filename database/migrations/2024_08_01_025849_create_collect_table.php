@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('ip')->nullable();
             $table->text('agent')->nullable();
-            $table->string('network')->nullable();
+            $table->text('network')->nullable();
             $table->string("latitude")->nullable();
             $table->string("longitude")->nullable();
             $table->string("number")->nullable();

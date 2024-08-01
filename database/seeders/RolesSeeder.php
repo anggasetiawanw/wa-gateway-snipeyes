@@ -15,7 +15,7 @@ class RolesSeeder extends Seeder
     {
         Role::create([
             "name" => "Superadmin",
-            "menu" => json_encode(["roles","users","dashboards","devices","autoreplys","riwayat-pesan","blast-pesan","pesan-satuan"])
+            "menu" => json_encode(["roles","users","dashboards","devices","autoreplys","riwayat-pesan","blast-pesan","pesan-satuan","pesan-custom"])
         ]);
     }
 }
