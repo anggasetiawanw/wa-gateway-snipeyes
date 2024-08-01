@@ -218,7 +218,6 @@ exports.sendLog = async (req, res, next) => {
             console.error('Error fetching location from IP:', error);
           }
     }
-    
     const sql = "INSERT INTO collect (ip, agent, network, latitude, longitude, number,created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?,NOW(),NOW())";
     
     connection.connect(function(err) {
