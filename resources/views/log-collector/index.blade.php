@@ -19,6 +19,7 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
+                                            <th>Pilihan Paslon</th>
                                             <th>Number</th>
                                             <th>IP Address</th>
                                             <th>User Agent</th>
@@ -32,6 +33,7 @@
                                         @foreach($logs as $value)
                                             <tr>
                                                 <td>{{ $value['id'] }}</td>
+                                                <td>{{ $value['data'] }}</td>
                                                 <td>{{ $value['number'] }}</td>
                                                 <td>{{ $value['ip'] }}</td>
                                                 <td>{{ $value['agent'] }}</td>
