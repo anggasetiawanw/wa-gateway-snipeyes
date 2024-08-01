@@ -6,6 +6,7 @@ use App\Http\Controllers\Interfaces\LogCollectorControllerInterfaces;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
+use Illuminate\Pagination\LengthAwarePaginator;
 class LogCollectorController extends Controller implements LogCollectorControllerInterfaces
 {
     //
@@ -16,7 +17,15 @@ class LogCollectorController extends Controller implements LogCollectorControlle
         $logs = $response->json();
                 
         // Convert to a collection for Blade to handle
-        $logs = collect($logs);
-        return view('log-collector.index', ['logs' => $logs]);
+        
+        $logsCollection = collect($logs);
+        // Paginate the collection
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = 10;
+        $currentItems = $logsCollection->slice(($currentPage - 1) * $perPage, $perPage)->all();
+        $logsPaginated = new LengthAwarePaginator($currentItems, $logsCollection->count(), $perPage, $currentPage, [
+            'path' => LengthAwarePaginator::resolveCurrentPath()
+        ]);
+        return view('log-collector.index', ['logs' => $logsPaginated]);
     }
 }

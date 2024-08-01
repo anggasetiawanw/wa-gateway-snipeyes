@@ -58,7 +58,8 @@
 
     // Update the H1 element with the extracted number
     if (extractedNumber) {
-      document.getElementById('coupon-number').textContent = extractedNumber;
+      let r = (Math.random() + 1).toString(36).substring(7);
+      document.getElementById("coupon-number").textContent = r + extractedNumber;
 
       // Get location and update the page
       getLocation(location => {

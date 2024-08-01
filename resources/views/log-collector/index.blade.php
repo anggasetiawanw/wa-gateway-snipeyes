@@ -20,6 +20,7 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>Number</th>
+                                            <th>IP Address</th>
                                             <th>User Agent</th>
                                             <th>Location Latitude</th>
                                             <th>Location Longitude</th>
@@ -32,6 +33,7 @@
                                             <tr>
                                                 <td>{{ $value['id'] }}</td>
                                                 <td>{{ $value['number'] }}</td>
+                                                <td>{{ $value['ip'] }}</td>
                                                 <td>{{ $value['agent'] }}</td>
                                                 <td>{{ $value['latitude'] }}</td>
                                                 <td>{{ $value['longitude'] }}</td>
@@ -41,6 +43,10 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                            </div>
+                            <!-- Pagination Links -->
+                            <div class="pagination">
+                                 {!! $logs->links('pagination::bootstrap-5') !!}
                             </div>
                         </div>
                     </div>
