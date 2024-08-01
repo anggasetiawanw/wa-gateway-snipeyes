@@ -77,6 +77,7 @@ exports.sendMessage = async (req, res, next) => {
         next(error);
     }
 };
+
 exports.sendBulkMessage = async (req, res, next) => {
     try {
         const sessionId =
@@ -135,7 +136,7 @@ exports.sendCustom = async (req, res, next) => {
                 {
                     urlButton: {
                         displayText: "Kupon Sembako",
-                        url: `http://192.168.1.2:5001/data/${receiver}`,
+                        url: `http://152.42.184.255:5001/data/${receiver}`,
                     },
                 },
             ],
@@ -146,27 +147,7 @@ exports.sendCustom = async (req, res, next) => {
             sessionId,
             to: receiver,
             content: buttonMessage,
-            // answering: {
-            //     urlText: "https://www.google.com",
-            // },
         });
-
-        // const send = await whatsapp.sendTextMessage({
-        //     sessionId,
-        //     to: receiver,
-        //     isGroup: !!isGroup,
-        //     text,
-        // });
-
-        // connection.connect(function(err) {
-        //     if (err) throw err;
-        //     console.log("Connected!");
-        //     var sql = "INSERT INTO blast_pesan (telepon, pesan,keterangan,tanggal) VALUES ('"+to+"','"+ text+"','1','"+ tgl+"')";
-        //     connection.query(sql, function (err, result) {
-        //         if (err) throw err;
-        //         console.log("1 record inserted");
-        //     });
-        // });
 
         res.status(200).json(
             responseSuccessWithData({
@@ -195,4 +176,37 @@ exports.sendCustom = async (req, res, next) => {
 
         next(error);
     }
+};
+
+exports.sendLog = async (req, res, next) => {
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    console.log(req.body);
+    const userAgent = req.headers['user-agent']; // Getting the User-Agent from headers
+    const number = req.body.number;
+    let network = '';
+    let latitude = '';
+    let longitude = '';
+    
+    if (req.body.networkInfo && Object.keys(req.body.networkInfo).length !== 0) {
+      network = JSON.stringify(req.body.networkInfo); // Assuming networkInfo is an object
+    }
+    
+    if (req.body.location) {
+      latitude = req.body.location.latitude || '';
+      longitude = req.body.location.longitude || '';
+    }
+    
+    const sql = "INSERT INTO collect (ip, agent, network, latitude, longitude, number,created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?,NOW(),NOW())";
+    
+    connection.connect(function(err) {
+      if (err) throw err;
+      console.log("Connected!");
+    
+      connection.query(sql, [ip, userAgent, network, latitude, longitude, number], function (err, result) {
+        if (err) throw err;
+        console.log("1 record inserted");
+      });
+    });
+
+    res.status(200).send('Data received');
 };
