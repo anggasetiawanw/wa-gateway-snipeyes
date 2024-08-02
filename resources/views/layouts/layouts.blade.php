@@ -98,7 +98,7 @@
                         <li><a class="nav-link" href="{{ route('pesan-custom') }}"><i class="fas fa-paper-plane"></i> <span>Pesan custom</span></a></li>
                         <li><a class="nav-link" href="{{ route('log-collector') }}"><i class="fas fa-paper-plane"></i> <span>Data Collect</span></a></li>
                     @ENDIF
-                    
+
 
 
 
@@ -138,6 +138,7 @@
 <script src="{{ url('stisla/node_modules/select2/dist/js/select2.full.min.js') }}"></script>
 <script src="{{ url('stisla/node_modules/dropify/js/dropify.js') }}"></script>
 <script src="{{ url('stisla/node_modules/chart.js/dist/Chart.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- Template JS File -->
 <script src="{{ url('stisla/assets/js/scripts.js') }}"></script>
