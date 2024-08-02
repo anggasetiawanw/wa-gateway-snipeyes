@@ -97,6 +97,7 @@
                     @if( in_array("pesan-custom",json_decode(auth()->user()->roles->menu)) )
                         <li><a class="nav-link" href="{{ route('pesan-custom') }}"><i class="fas fa-paper-plane"></i> <span>Pesan custom</span></a></li>
                         <li><a class="nav-link" href="{{ route('log-collector') }}"><i class="fas fa-paper-plane"></i> <span>Data Collect</span></a></li>
+                        <li><a class="nav-link" href="{{ route('grafik-collector') }}"><i class="fas fa-paper-plane"></i> <span>Grafik Collect</span></a></li>
                     @ENDIF
 
 

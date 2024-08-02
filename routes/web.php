@@ -124,3 +124,8 @@ Route::group(['prefix' => 'log-collector', 'middleware' => ['auth']], function()
 
     Route::get('/',[App\Http\Controllers\LogCollectorController::class,'index'])->name('log-collector');
 });
+
+Route::group(['prefix' => 'grafik-collector', 'middleware' => ['auth']], function(){
+
+    Route::get('/',[App\Http\Controllers\GrafikCollectorController::class,'index'])->name('grafik-collector');
+});
